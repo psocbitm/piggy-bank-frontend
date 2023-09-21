@@ -7,10 +7,15 @@ import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "./theme";
 import { BrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
-
+import store from "./store/store";
+import { Provider } from "react-redux";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
+      
     <BrowserRouter>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <ChakraProvider>
@@ -19,6 +24,8 @@ root.render(
         </Layout>
       </ChakraProvider>
     </BrowserRouter>
+    <ToastContainer />
+    </Provider>
   </React.StrictMode>
 );
 

@@ -15,19 +15,27 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Controls, Player } from "@lottiefiles/react-lottie-player";
-import { Link } from "react-router-dom";
+import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../features/user/userSlice";
+import { toast } from "react-toastify";
 
 function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    confirmPassword: "",
     name: "", // Optional field
   });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,25 +45,47 @@ function SignUpForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
 
     try {
+      // Check if passwords match
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match.");
+        setLoading(false);
+        return;
+      }
+
       // Send a POST request to your API with the provided data
       const response = await axios.post(
         "http://localhost:8080/api/users/",
         formData
       );
-
+      console.log(response);
       if (response.status === 201) {
-        // Registration successful, handle success scenario here
-        console.log("User registered successfully!");
+        // Registration successful
+        toast.success("User registered successfully!", {
+          position: "top-right",
+          autoClose: 3000, // Auto-close the toast after 3 seconds
+        });
+
+        // Save user data to local storage
+        localStorage.setItem("user", JSON.stringify(response.data));
+
+        // Save user data to Redux
+        dispatch(setUserDetails(response.data));
+        navigate("/user");
+        // Redirect to the user page (if you have a routing mechanism in place)
+        // history.push('/user'); // Import history if needed
       } else {
-        // Handle registration errors, e.g., show an error message
+        // Handle registration errors
         setError("Registration failed. Please check your data.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       // Handle network errors or other issues
       setError("Registration failed. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,6 +105,8 @@ function SignUpForm() {
               type="text"
               value={formData.name}
               onChange={handleInputChange}
+              border="1px"
+              borderColor={useColorModeValue("gray.300", "gray.600")}
             />
           </FormControl>
           <FormControl id="username" isRequired>
@@ -83,6 +115,8 @@ function SignUpForm() {
               name="username"
               type="text"
               value={formData.username}
+              border="1px"
+              borderColor={useColorModeValue("gray.300", "gray.600")}
               onChange={handleInputChange}
             />
           </FormControl>
@@ -94,25 +128,45 @@ function SignUpForm() {
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleInputChange}
+                border="1px"
+                borderColor={useColorModeValue("gray.300", "gray.600")}
               />
               <InputRightElement h={"full"}>
                 <Button
                   variant={"ghost"}
                   onClick={() => setShowPassword((show) => !show)}
+                  border="1px"
+                  borderColor={useColorModeValue("gray.300", "gray.600")}
                 >
                   {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                 </Button>
               </InputRightElement>
             </InputGroup>
           </FormControl>
-
+          <FormControl id="confirmPassword" isRequired>
+            <FormLabel>Confirm Password</FormLabel>
+            <Input
+              name="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              border="1px"
+              borderColor={useColorModeValue("gray.300", "gray.600")}
+            />
+          </FormControl>
           {error && (
             <Text color="red.500" fontSize="sm">
               {error}
             </Text>
           )}
+          {successMessage && (
+            <Text color="green.500" fontSize="sm">
+              {successMessage}
+            </Text>
+          )}
           <Stack spacing={10} pt={2}>
             <Button
+              isLoading={loading}
               loadingText="Submitting"
               type="submit"
               size="lg"

@@ -72,6 +72,8 @@ function SignInForm() {
               type="text"
               value={formData.username}
               onChange={handleInputChange}
+              border="1px"
+              borderColor={useColorModeValue("gray.300", "gray.600")}
             />
           </FormControl>
           <FormControl id="password" isRequired>
@@ -82,11 +84,15 @@ function SignInForm() {
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleInputChange}
+                border="1px"
+                borderColor={useColorModeValue("gray.300", "gray.600")}
               />
               <InputRightElement h={"full"}>
                 <Button
                   variant={"ghost"}
                   onClick={() => setShowPassword((show) => !show)}
+                  border="1px"
+                  borderColor={useColorModeValue("gray.300", "gray.600")}
                 >
                   {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                 </Button>
@@ -113,7 +119,6 @@ function SignInForm() {
               Sign In
             </Button>
           </Stack>
-         
         </Stack>
       </form>
     </Box>
