@@ -13,7 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 export default function HeroSection() {
+  const user = useSelector((state) => state.user.userDetails);
   return (
     <Container maxW={"7xl"}>
       <Stack
@@ -57,24 +59,49 @@ export default function HeroSection() {
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}
           >
-            <ChakraLink as={ReactRouterLink} to="/login">
-              <Button
-                rounded={"full"}
-                size={"lg"}
-                fontWeight={"normal"}
-                px={6}
-                colorScheme={"red"}
-                bg={"red.400"}
-                _hover={{ bg: "red.500" }}
-              >
-                Sign in
-              </Button>
-            </ChakraLink>
-            <ChakraLink as={ReactRouterLink} to="/register">
-              <Button rounded={"full"} size={"lg"} fontWeight={"normal"} px={6}>
-                Sign up
-              </Button>
-            </ChakraLink>
+            {user ? (
+              <>
+                <ChakraLink as={ReactRouterLink} to="/user">
+                  <Button
+                    rounded={"full"}
+                    size={"lg"}
+                    fontWeight={"normal"}
+                    px={6}
+                    colorScheme={"red"}
+                    bg={"red.400"}
+                    _hover={{ bg: "red.500" }}
+                  >
+                    Dashboard
+                  </Button>
+                </ChakraLink>
+              </>
+            ) : (
+              <>
+                <ChakraLink as={ReactRouterLink} to="/login">
+                  <Button
+                    rounded={"full"}
+                    size={"lg"}
+                    fontWeight={"normal"}
+                    px={6}
+                    colorScheme={"red"}
+                    bg={"red.400"}
+                    _hover={{ bg: "red.500" }}
+                  >
+                    Sign in
+                  </Button>
+                </ChakraLink>
+                <ChakraLink as={ReactRouterLink} to="/register">
+                  <Button
+                    rounded={"full"}
+                    size={"lg"}
+                    fontWeight={"normal"}
+                    px={6}
+                  >
+                    Sign up
+                  </Button>
+                </ChakraLink>
+              </>
+            )}
           </Stack>
         </Stack>
         <Flex
@@ -90,14 +117,14 @@ export default function HeroSection() {
             position={"absolute"}
             top={"-20%"}
             left={0}
-            zIndex={-1}
+            zIndex={0}
             color={useColorModeValue("red.400", "red.400")}
           />
           <Box
             position={"relative"}
             height={"300px"}
-            rounded={"2xl"}
-            boxShadow={"2xl"}
+            rounded={"3xl"}
+            boxShadow={"3xl"}
             width={"full"}
             overflow={"hidden"}
           >
@@ -117,6 +144,7 @@ export default function HeroSection() {
               align={"center"}
               w={"100%"}
               h={"100%"}
+              zIndex={999}
               src={
                 "https://previews.123rf.com/images/tul/tul1611/tul161100019/67676114-banking-vector-banner-design-concept-flat-style-with-thin-line-art-banking-icons-on-white-background.jpg"
               }

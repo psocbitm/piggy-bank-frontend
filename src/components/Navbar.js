@@ -18,7 +18,7 @@ import {
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import Logo from "./Logo";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { Link as ChakraLink, LinkProps } from "@chakra-ui/react";
+import { Link as ChakraLink } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 export default function Nav() {
@@ -40,6 +40,8 @@ export default function Nav() {
         position={"fixed"}
         w={"100vw"}
         zIndex={9999}
+        borderBottom={"1px"}
+        borderColor={useColorModeValue("gray.200", "gray.700")}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
@@ -48,13 +50,14 @@ export default function Nav() {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={4}>
-            <Button onClick={toggleColorMode}>
+              <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               {user ? (
                 <>
-
-                  <Button onClick={toggleColorMode}>Account</Button>
+                  <ChakraLink as={ReactRouterLink} to="/user">
+                    <Button>Dashboard</Button>
+                  </ChakraLink>
                   <Menu>
                     <MenuButton
                       as={Button}
@@ -100,7 +103,6 @@ export default function Nav() {
                   </ChakraLink>
                 </>
               )}
-              
             </Stack>
           </Flex>
         </Flex>
