@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { setUserDetails } from "./features/user/userSlice";
+import Setting from "./pages/Setting";
 
 function App() {
   const user = useSelector((state) => state.user.userDetails);
@@ -20,7 +21,6 @@ function App() {
     localStorage.setItem("user", JSON.stringify(res.data));
     dispatch(setUserDetails(res.data));
   };
-
   useEffect(() => {
     if (localStorage.getItem("user")) {
       fetchUser();
@@ -38,6 +38,10 @@ function App() {
       <Route
         path="user"
         element={user ? <UserDashboard /> : <Navigate to="/" />}
+      />
+      <Route
+        path="settings"
+        element={user ? <Setting /> : <Navigate to="/" />}
       />
     </Routes>
   );

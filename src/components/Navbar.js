@@ -89,6 +89,13 @@ export default function Nav() {
                       </Center>
                       <br />
                       <MenuDivider />
+                      <ChakraLink
+                        as={ReactRouterLink}
+                        to="/settings"
+                        textDecoration={"none"}
+                      >
+                        <MenuItem>Settings</MenuItem>
+                      </ChakraLink>
                       <MenuItem onClick={logoutHandler}>Logout</MenuItem>
                     </MenuList>
                   </Menu>

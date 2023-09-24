@@ -123,7 +123,7 @@ function ManagePayees() {
             isClosable: true,
           });
         } else {
-          console.error("Error adding payee:", error);
+          console.error("Error adding payee:", "You need to create an account first.");
         }
       });
   };
@@ -146,7 +146,7 @@ function ManagePayees() {
           p={4}
         >
           <Flex alignItems="end" justifyContent="space-between" gap={10}>
-            <FormControl id="name" >
+            <FormControl id="name">
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
@@ -156,7 +156,7 @@ function ManagePayees() {
                 }
               />
             </FormControl>
-            <FormControl id="accountNumber" >
+            <FormControl id="accountNumber">
               <FormLabel>Account Number</FormLabel>
               <Input
                 type="text"
@@ -169,7 +169,7 @@ function ManagePayees() {
                 }
               />
             </FormControl>
-            <FormControl id="nickname" >
+            <FormControl id="nickname">
               <FormLabel>Nickname</FormLabel>
               <Input
                 type="text"
@@ -189,17 +189,17 @@ function ManagePayees() {
             </Text>
           )}
         </Box>
-     
+
+        {payees.length > 0 ? (
           <Box
             rounded={"lg"}
             boxShadow={"lg"}
             p={4}
-            bg={useColorModeValue("gray.200", "gray.800")}
           >
             {payees.map((payee) => (
               <Box key={payee.id}>
                 <Flex alignItems="end" justifyContent="space-between" gap={10}>
-                  <FormControl id={`name-${payee.id}`} >
+                  <FormControl id={`name-${payee.id}`}>
                     <FormLabel>Name</FormLabel>
                     <Input
                       type="text"
@@ -215,7 +215,7 @@ function ManagePayees() {
                       }}
                     />
                   </FormControl>
-                  <FormControl id={`accountNumber-${payee.id}`} >
+                  <FormControl id={`accountNumber-${payee.id}`}>
                     <FormLabel>Account Number</FormLabel>
                     <Input
                       type="text"
@@ -231,7 +231,7 @@ function ManagePayees() {
                       }}
                     />
                   </FormControl>
-                  <FormControl id={`nickname-${payee.id}`} >
+                  <FormControl id={`nickname-${payee.id}`}>
                     <FormLabel>Nickname</FormLabel>
                     <Input
                       type="text"
@@ -294,7 +294,9 @@ function ManagePayees() {
               </Box>
             ))}
           </Box>
-        
+        ) : (
+          <Text>No payees found.</Text>
+        )}
       </Stack>
     </Box>
   );

@@ -1,21 +1,21 @@
 // features/user/userSlice.js
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
-    userDetails: JSON.parse(localStorage.getItem('user')),
+    userDetails: JSON.parse(localStorage.getItem("user")),
   },
   reducers: {
     setUserDetails: (state, action) => {
-      state.userDetails = action.payload
+      state.userDetails = action.payload;
     },
     clearUserDetails: (state) => {
-      state.userDetails = null
+      state.userDetails = null;
     },
   },
-})
+});
 
-export const { setUserDetails, clearUserDetails } = userSlice.actions
+export const { setUserDetails, clearUserDetails } = userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;

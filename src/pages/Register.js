@@ -170,10 +170,10 @@ function SignUpForm() {
               loadingText="Submitting"
               type="submit"
               size="lg"
-              bg={"blue.400"}
+              bg={"red.400"}
               color={"white"}
               _hover={{
-                bg: "blue.500",
+                bg: "red.500",
               }}
             >
               Sign up

@@ -94,10 +94,10 @@ function CreateAccount() {
             )}
             <Stack spacing={10}>
               <Button
-                bg={"blue.400"}
+                bg={"red.400"}
                 color={"white"}
                 _hover={{
-                  bg: "blue.500",
+                  bg: "red.500",
                 }}
                 onClick={handleCreateAccount}
               >

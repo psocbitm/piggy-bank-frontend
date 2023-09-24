@@ -15,7 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import {
+  FaArrowCircleDown,
+  FaArrowCircleUp,
   FaExchangeAlt,
+  FaHistory,
   FaMoneyBill,
   FaMoneyBillWave,
   FaMoneyCheckAlt,
@@ -23,17 +26,17 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import DashboardContent from "../components/DashboardContent";
-import { setDashboardType } from "../features/user/dashboard/dashboardSlice";
+import { setDashboardType } from "../features/dashboard/dashboardSlice";
 
 const LinkItems = [
   { name: "Create Account", icon: FaUserPlus, type: "create-account" },
 
   { name: "Account Summary", icon: FaMoneyCheckAlt, type: "account-summary" },
   { name: "Manage Payee's", icon: FaUserPlus, type: "manage-payees" },
-
   { name: "Transfer", icon: FaExchangeAlt, type: "transfer" },
-  { name: "Deposit", icon: FaMoneyBillWave, type: "deposit" },
-  { name: "Withdraw", icon: FaMoneyBill, type: "withdraw" },
+  { name: "Deposit", icon: FaArrowCircleUp, type: "deposit" },
+  { name: "Withdraw", icon: FaArrowCircleDown, type: "withdraw" },
+  { name: "Transaction history", icon: FaHistory, type: "transaction-history" },
 ];
 
 export default function UserDashboard() {
