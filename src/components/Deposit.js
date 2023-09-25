@@ -105,7 +105,9 @@ function Deposit() {
             </FormControl>
             <FormControl id="amount">
               <FormLabel>Amount</FormLabel>
-              <Input
+             <Input
+            border={"1px solid"}
+            borderColor={useColorModeValue("gray.400", "gray.600")}
                 type="number"
                 placeholder="Enter amount"
                 value={amount}

@@ -29,7 +29,6 @@ function SignUpForm() {
     username: "",
     password: "",
     confirmPassword: "",
-    name: "", // Optional field
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -48,41 +47,32 @@ function SignUpForm() {
     setLoading(true);
 
     try {
-      // Check if passwords match
       if (formData.password !== formData.confirmPassword) {
         setError("Passwords do not match.");
         setLoading(false);
         return;
       }
 
-      // Send a POST request to your API with the provided data
       const response = await axios.post(
         "http://localhost:8080/api/users/",
         formData
       );
       console.log(response);
       if (response.status === 201) {
-        // Registration successful
         toast.success("User registered successfully!", {
           position: "top-right",
-          autoClose: 3000, // Auto-close the toast after 3 seconds
+          autoClose: 3000,
         });
 
-        // Save user data to local storage
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        // Save user data to Redux
         dispatch(setUserDetails(response.data));
         navigate("/user");
-        // Redirect to the user page (if you have a routing mechanism in place)
-        // history.push('/user'); // Import history if needed
       } else {
-        // Handle registration errors
         setError("Registration failed. Please check your data.");
       }
     } catch (error) {
       console.error(error);
-      // Handle network errors or other issues
       setError("Registration failed. Please try again later.");
     } finally {
       setLoading(false);
@@ -98,17 +88,6 @@ function SignUpForm() {
     >
       <form onSubmit={handleSubmit}>
         <Stack spacing={4}>
-          <FormControl id="name">
-            <FormLabel>Name</FormLabel>
-            <Input
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleInputChange}
-              border="1px"
-              borderColor={useColorModeValue("gray.300", "gray.600")}
-            />
-          </FormControl>
           <FormControl id="username" isRequired>
             <FormLabel>Username</FormLabel>
             <Input

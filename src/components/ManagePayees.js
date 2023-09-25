@@ -123,7 +123,10 @@ function ManagePayees() {
             isClosable: true,
           });
         } else {
-          console.error("Error adding payee:", "You need to create an account first.");
+          console.error(
+            "Error adding payee:",
+            "You need to create an account first."
+          );
         }
       });
   };
@@ -139,12 +142,7 @@ function ManagePayees() {
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Manage Payees</Heading>
         </Stack>
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("gray.200", "gray.800")}
-          boxShadow={"lg"}
-          p={4}
-        >
+        <Box rounded={"lg"} boxShadow={"lg"} p={4}>
           <Flex alignItems="end" justifyContent="space-between" gap={10}>
             <FormControl id="name">
               <FormLabel>Name</FormLabel>
@@ -191,17 +189,14 @@ function ManagePayees() {
         </Box>
 
         {payees.length > 0 ? (
-          <Box
-            rounded={"lg"}
-            boxShadow={"lg"}
-            p={4}
-          >
+          <Box rounded={"lg"} boxShadow={"lg"} p={4}>
             {payees.map((payee) => (
               <Box key={payee.id}>
                 <Flex alignItems="end" justifyContent="space-between" gap={10}>
                   <FormControl id={`name-${payee.id}`}>
                     <FormLabel>Name</FormLabel>
                     <Input
+                    
                       type="text"
                       value={payee.name}
                       isDisabled={!editMode[payee.id]}
@@ -218,6 +213,7 @@ function ManagePayees() {
                   <FormControl id={`accountNumber-${payee.id}`}>
                     <FormLabel>Account Number</FormLabel>
                     <Input
+                    
                       type="text"
                       value={payee.accountNumber}
                       isDisabled={!editMode[payee.id]}
@@ -234,6 +230,7 @@ function ManagePayees() {
                   <FormControl id={`nickname-${payee.id}`}>
                     <FormLabel>Nickname</FormLabel>
                     <Input
+                     
                       type="text"
                       value={payee.nickname}
                       isDisabled={!editMode[payee.id]}

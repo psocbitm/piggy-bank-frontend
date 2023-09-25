@@ -13,6 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function CreateAccount() {
   const [accountNumber, setAccountNumber] = useState("");
@@ -20,6 +21,7 @@ function CreateAccount() {
   const [error, setError] = useState(""); // State variable for error message
   const toast = useToast();
   const user = useSelector((state) => state.user.userDetails);
+  const navigate = useNavigate();
   const handleCreateAccount = async () => {
     try {
       // Assuming you have a variable 'userId' that holds the user's ID.
@@ -33,7 +35,7 @@ function CreateAccount() {
           balance: balance,
         }
       );
-
+        console.log(response);
       // Show a success toast
       toast({
         title: "Account Created",
@@ -52,8 +54,9 @@ function CreateAccount() {
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.message;
         setError(errorMessage); // Set the error message state
+        navigate("/settings");
       } else {
-        console.error("Error creating account:", error);
+        console.error(error);
       }
     }
   };
@@ -73,7 +76,9 @@ function CreateAccount() {
           <Stack spacing={4}>
             <FormControl id="account-number">
               <FormLabel>Account Number</FormLabel>
-              <Input
+             <Input
+            border={"1px solid"}
+            borderColor={useColorModeValue("gray.400", "gray.600")}
                 type="text"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
@@ -81,7 +86,9 @@ function CreateAccount() {
             </FormControl>
             <FormControl id="balance">
               <FormLabel>Balance</FormLabel>
-              <Input
+             <Input
+            border={"1px solid"}
+            borderColor={useColorModeValue("gray.400", "gray.600")}
                 type="text"
                 value={balance}
                 onChange={(e) => setBalance(e.target.value)}

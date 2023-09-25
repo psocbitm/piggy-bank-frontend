@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -74,9 +75,14 @@ const Form = () => {
   };
 
   return (
-    <>
-      <Heading textAlign="center" fontWeight="normal" mb="2%">
-        User Registration
+    <Box
+      bg={useColorModeValue("gray.100", "gray.800")}
+      border={"1px solid"}
+      p={10}
+      borderRadius={"3xl"}
+    >
+      <Heading textAlign="center" fontWeight="normal" mb="5%">
+        User Details
       </Heading>
       <Flex>
         <FormControl mr="5%">
@@ -84,6 +90,8 @@ const Form = () => {
             Full Name
           </FormLabel>
           <Input
+            border={"1px solid"}
+            borderColor={useColorModeValue("gray.400", "gray.600")}
             id="full-name"
             name="fullName"
             placeholder="Full name"
@@ -98,6 +106,8 @@ const Form = () => {
             Username
           </FormLabel>
           <Input
+            border={"1px solid"}
+            borderColor={useColorModeValue("gray.400", "gray.600")}
             id="username"
             name="username"
             placeholder="Username"
@@ -113,6 +123,8 @@ const Form = () => {
           Email address
         </FormLabel>
         <Input
+          border={"1px solid"}
+          borderColor={useColorModeValue("gray.400", "gray.600")}
           id="email"
           name="email"
           type="email"
@@ -129,6 +141,8 @@ const Form = () => {
         </FormLabel>
         <InputGroup size="md">
           <Input
+            border={"1px solid"}
+            borderColor={useColorModeValue("gray.400", "gray.600")}
             id="password"
             name="password"
             pr="4.5rem"
@@ -152,6 +166,8 @@ const Form = () => {
         </FormLabel>
         <InputGroup size="md">
           <Input
+            border={"1px solid"}
+            borderColor={useColorModeValue("gray.400", "gray.600")}
             id="phone-number"
             name="phoneNumber"
             pr="4.5rem"
@@ -169,12 +185,7 @@ const Form = () => {
       <Box mt={4}>
         {editMode ? (
           <>
-            <Button
-              bg="red.400"
-              color="white"
-              size="md"
-              onClick={handleUpdate}
-            >
+            <Button bg="red.400" color="white" size="md" onClick={handleUpdate}>
               Save
             </Button>
             <Button
@@ -198,24 +209,19 @@ const Form = () => {
           </Button>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 
 export default function Setting() {
   return (
-    <>
-      <Box
-        borderWidth="1px"
-        rounded="lg"
-        shadow="1px 1px 3px rgba(0,0,0,0.5)"
-        maxWidth={800}
-        p={6}
-        m="10px auto"
-        as="form"
-      >
-        <Form />
-      </Box>
-    </>
+    <Flex
+      minH={"calc(100vh - 64px)"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.900")}
+    >
+      <Form />
+    </Flex>
   );
 }

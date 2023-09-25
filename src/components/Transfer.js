@@ -53,15 +53,20 @@ function Transfer() {
 
   const handleTransfer = async () => {
     try {
-      await axios.post("http://localhost:8080/api/transactions/transfer", {
-        sourceAccount: {
-          id: sourceAccount,
-        },
-        destinationAccount: {
-          id: destinationAccount,
-        },
-        amount: parseFloat(amount),
-      });
+      const res = await axios.post(
+        "http://localhost:8080/api/transactions/transfer",
+        {
+          sourceAccount: {
+            accountNumber: sourceAccount,
+          },
+          destinationAccount: {
+            accountNumber: destinationAccount,
+          },
+          amount: parseFloat(amount),
+        }
+      );
+      console.log(destinationAccount);
+      console.log(res);
       fetchAccounts();
       toast({
         title: "Transfer Successful",
@@ -109,14 +114,15 @@ function Transfer() {
           <Stack spacing={4}>
             <FormControl id="source-account">
               <FormLabel>Source Account</FormLabel>
+
               <Select
                 placeholder="Select account"
                 value={sourceAccount}
                 onChange={(e) => setSourceAccount(e.target.value)}
               >
                 {accounts.map((account) => (
-                  <option key={account.id} value={account.id}>
-                    {account.accountNumber} - ₹{account.balance}
+                  <option key={account.id} value={account.accountNumber}>
+                    {account.accountNumber} - ₹{account.balance} - {account.id}
                   </option>
                 ))}
               </Select>
@@ -130,7 +136,7 @@ function Transfer() {
               >
                 {payees.map((payee) => (
                   <option key={payee.id} value={payee.accountNumber}>
-                    {payee.name} - {payee.accountNumber}
+                    {payee.name} - {payee.accountNumber} - {payee.id}
                   </option>
                 ))}
               </Select>
@@ -138,6 +144,8 @@ function Transfer() {
             <FormControl id="amount">
               <FormLabel>Amount</FormLabel>
               <Input
+                border={"1px solid"}
+                borderColor={useColorModeValue("gray.400", "gray.600")}
                 type="number"
                 placeholder="Enter amount"
                 value={amount}
