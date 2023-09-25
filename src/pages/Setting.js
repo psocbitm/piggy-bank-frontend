@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUserDetails } from "../features/user/userSlice";
 import { toast } from "react-toastify";
-
+import { faker } from "@faker-js/faker";
 const Form = () => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -26,6 +26,34 @@ const Form = () => {
   const [formData, setFormData] = useState({ ...user });
   const [editMode, setEditMode] = useState(false);
   const [validationError, setValidationError] = useState("");
+
+  const generateRandomData = () => {
+    const randomData = {};
+
+    if (!formData.fullName && editMode) {
+      randomData.fullName = faker.person.fullName();
+    }
+
+    if (!formData.username && editMode) {
+      randomData.username = faker.internet.userName();
+    }
+
+    if (!formData.email && editMode) {
+      randomData.email = faker.internet.email();
+    }
+
+    if (!formData.password && editMode) {
+      randomData.password = faker.internet.password();
+    }
+
+    if (!formData.phoneNumber && editMode) {
+      randomData.phoneNumber = faker.number.int();
+    }
+    setFormData({
+      ...formData,
+      ...randomData,
+    });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -196,6 +224,15 @@ const Form = () => {
               ml={2}
             >
               Cancel
+            </Button>
+            <Button
+              bg="blue.400"
+              color="white"
+              size="md"
+              onClick={generateRandomData}
+              ml={2}
+            >
+              Fill with Random Data
             </Button>
           </>
         ) : (

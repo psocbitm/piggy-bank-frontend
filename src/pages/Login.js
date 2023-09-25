@@ -1,5 +1,5 @@
+// src/pages/Login.js
 import React, { useState } from "react";
-import axios from "axios";
 import {
   Box,
   Button,
@@ -14,17 +14,24 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
-import { Link as ChakraLink } from "@chakra-ui/react";
 import { Controls, Player } from "@lottiefiles/react-lottie-player";
-function SignInForm() {
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../features/user/userSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,25 +41,32 @@ function SignInForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
 
     try {
-      // Send a POST request to your API with the provided data
       const response = await axios.post(
         "http://localhost:8080/api/users/login",
         formData
       );
 
-      if (response.status === 200) {
-        // Login successful, handle success scenario here
-        console.log("User logged in successfully!");
+      if (response.status === 201) {
+        toast.success("Login successful!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+
+        localStorage.setItem("user", JSON.stringify(response.data));
+
+        dispatch(setUserDetails(response.data));
+        navigate("/user");
       } else {
-        // Handle login errors, e.g., show an error message
         setError("Login failed. Please check your credentials.");
       }
     } catch (error) {
-      console.log(error);
-      // Handle network errors or other issues
+      console.error(error);
       setError("Login failed. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,9 +85,9 @@ function SignInForm() {
               name="username"
               type="text"
               value={formData.username}
-              onChange={handleInputChange}
               border="1px"
               borderColor={useColorModeValue("gray.300", "gray.600")}
+              onChange={handleInputChange}
             />
           </FormControl>
           <FormControl id="password" isRequired>
@@ -99,7 +113,6 @@ function SignInForm() {
               </InputRightElement>
             </InputGroup>
           </FormControl>
-
           {error && (
             <Text color="red.500" fontSize="sm">
               {error}
@@ -107,7 +120,8 @@ function SignInForm() {
           )}
           <Stack spacing={10} pt={2}>
             <Button
-              loadingText="Logging in"
+              isLoading={loading}
+              loadingText="Submitting"
               type="submit"
               size="lg"
               bg={"red.400"}
@@ -116,7 +130,7 @@ function SignInForm() {
                 bg: "red.500",
               }}
             >
-              Sign In
+              Login
             </Button>
           </Stack>
         </Stack>
@@ -136,13 +150,13 @@ export default function Login() {
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign In
+              Login
             </Heading>
             <Text fontSize={"lg"} color={"gray.500"}>
-              Welcome back! Please sign in to continue.
+              Log in to manage your money and transactions.
             </Text>
           </Stack>
-          <SignInForm />
+          <LoginForm />
         </Stack>
       </Flex>
       <Flex flex={1} justifyContent={"center"} alignItems={"center"}>

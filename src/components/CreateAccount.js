@@ -16,27 +16,17 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function CreateAccount() {
-  const [accountNumber, setAccountNumber] = useState("");
-  const [balance, setBalance] = useState("");
   const [error, setError] = useState(""); // State variable for error message
   const toast = useToast();
   const user = useSelector((state) => state.user.userDetails);
   const navigate = useNavigate();
   const handleCreateAccount = async () => {
     try {
-      // Assuming you have a variable 'userId' that holds the user's ID.
       const userId = user.id; // Replace with your actual user ID.
 
-      // Make the Axios POST request to create an account
-      const response = await axios.post(
-        `http://localhost:8080/api/accounts/${userId}`,
-        {
-          accountNumber: accountNumber,
-          balance: balance,
-        }
+      const res = await axios.post(
+        `http://localhost:8080/api/accounts/?userId=${userId}`
       );
-        console.log(response);
-      // Show a success toast
       toast({
         title: "Account Created",
         description: "Your account has been created successfully.",
@@ -44,17 +34,24 @@ function CreateAccount() {
         duration: 5000, // Toast will disappear after 5 seconds
         isClosable: true,
       });
-
-      // Clear the input fields and error message
-      setAccountNumber("");
-      setBalance("");
+      console.log(res);
       setError("");
     } catch (error) {
-      // Display the error message from the response
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.message;
-        setError(errorMessage); // Set the error message state
-        navigate("/settings");
+        if (errorMessage === "") {
+          toast({
+            title: "You need to complete your profile first",
+            description: "Please complete your profile first.",
+            status: "error",
+            duration: 5000, // Toast will disappear after 5 seconds
+            isClosable: true,
+          });
+
+          navigate("/settings");
+        } else {
+          setError(errorMessage); // Set the error message state
+        }
       } else {
         console.error(error);
       }
@@ -74,26 +71,6 @@ function CreateAccount() {
           p={8}
         >
           <Stack spacing={4}>
-            <FormControl id="account-number">
-              <FormLabel>Account Number</FormLabel>
-             <Input
-            border={"1px solid"}
-            borderColor={useColorModeValue("gray.400", "gray.600")}
-                type="text"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-              />
-            </FormControl>
-            <FormControl id="balance">
-              <FormLabel>Balance</FormLabel>
-             <Input
-            border={"1px solid"}
-            borderColor={useColorModeValue("gray.400", "gray.600")}
-                type="text"
-                value={balance}
-                onChange={(e) => setBalance(e.target.value)}
-              />
-            </FormControl>
             {error && ( // Conditional rendering of error message
               <Text color="red.500" fontSize="sm">
                 {error}
@@ -108,7 +85,7 @@ function CreateAccount() {
                 }}
                 onClick={handleCreateAccount}
               >
-                Create Account
+                Tap to create an Account
               </Button>
             </Stack>
           </Stack>
