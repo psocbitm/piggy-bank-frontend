@@ -1,18 +1,22 @@
-// features/dashboard/dashboardSlice.js
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const dashboardSlice = createSlice({
-  name: 'dashboard',
+  name: "dashboard",
   initialState: {
-    dashboardType: 'create-account'
+    dashboardType: "create-account",
+    adminDashboardType: "users",
   },
   reducers: {
     setDashboardType: (state, action) => {
-      state.dashboardType = action.payload
+      state.dashboardType = action.payload;
+    },
+    setAdminDashboardType: (state, action) => {
+      state.adminDashboardType = action.payload;
     },
   },
-})
+});
 
-export const { setDashboardType } = dashboardSlice.actions
+export const { setDashboardType, setAdminDashboardType } =
+  dashboardSlice.actions;
 
-export default dashboardSlice.reducer
+export default dashboardSlice.reducer;

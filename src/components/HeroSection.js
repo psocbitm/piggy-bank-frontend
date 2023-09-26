@@ -61,7 +61,7 @@ export default function HeroSection() {
           >
             {user ? (
               <>
-                <ChakraLink as={ReactRouterLink} to="/user">
+                <ChakraLink as={ReactRouterLink} to="/dashboard">
                   <Button
                     rounded={"full"}
                     size={"lg"}

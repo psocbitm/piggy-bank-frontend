@@ -19,6 +19,7 @@ function Transfer() {
   const [sourceAccount, setSourceAccount] = useState("");
   const [destinationAccount, setDestinationAccount] = useState("");
   const [amount, setAmount] = useState("");
+  const [transferType, setTransferType] = useState("RTGS"); // Added transferType state
   const [error, setError] = useState("");
   const toast = useToast();
   const user = useSelector((state) => state.user.userDetails);
@@ -63,8 +64,10 @@ function Transfer() {
             accountNumber: destinationAccount,
           },
           amount: parseFloat(amount),
+          type: "TRANSFER_"+transferType, // Include transferType in the request
         }
       );
+
       console.log(destinationAccount);
       console.log(res);
       fetchAccounts();
@@ -114,7 +117,6 @@ function Transfer() {
           <Stack spacing={4}>
             <FormControl id="source-account">
               <FormLabel>Source Account</FormLabel>
-
               <Select
                 placeholder="Select account"
                 value={sourceAccount}
@@ -151,6 +153,16 @@ function Transfer() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
+            </FormControl>
+            <FormControl id="transfer-type"> {/* Added transfer type selection */}
+              <FormLabel>Transfer Type</FormLabel>
+              <Select
+                value={transferType}
+                onChange={(e) => setTransferType(e.target.value)}
+              >
+                <option value="NEFT">NEFT - if destination account is in another bank</option>
+                <option value="RTGS">RTGS - if destination account is in same bank</option>
+              </Select>
             </FormControl>
             {error && (
               <Text color="red.500" fontSize="sm">

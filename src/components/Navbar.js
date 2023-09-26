@@ -55,7 +55,7 @@ export default function Nav() {
               </Button>
               {user ? (
                 <>
-                  <ChakraLink as={ReactRouterLink} to="/user">
+                  <ChakraLink as={ReactRouterLink} to="/dashboard">
                     <Button>Dashboard</Button>
                   </ChakraLink>
                   <Menu>

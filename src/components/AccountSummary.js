@@ -19,7 +19,6 @@ function AccountSummary() {
   const [accounts, setAccounts] = useState([]);
   const user = useSelector((state) => state.user.userDetails);
   const toast = useToast();
-
   const fetchAccounts = async () => {
     try {
       const response = await axios.get(

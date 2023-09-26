@@ -26,19 +26,16 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import DashboardContent from "../components/DashboardContent";
-import { setDashboardType } from "../features/dashboard/dashboardSlice";
+import { setAdminDashboardType } from "../features/dashboard/dashboardSlice";
+import AdminDashboardContent from "../components/AdminDashboardContent";
 
 const LinkItems = [
-  { name: "Create Account", icon: FaUserPlus, type: "create-account" },
-  { name: "Account Summary", icon: FaMoneyCheckAlt, type: "account-summary" },
-  { name: "Manage Payee's", icon: FaUserPlus, type: "manage-payees" },
-  { name: "Transfer", icon: FaExchangeAlt, type: "transfer" },
-  { name: "Deposit", icon: FaArrowCircleUp, type: "deposit" },
-  { name: "Withdraw", icon: FaArrowCircleDown, type: "withdraw" },
-  { name: "Transaction history", icon: FaHistory, type: "transaction-history" },
+  { name: "Users", icon: FaUserPlus, type: "users" },
+  { name: "Accounts", icon: FaMoneyCheckAlt, type: "accounts" },
+  { name: "Transactions", icon: FaUserPlus, type: "transactions" },
 ];
 
-export default function UserDashboard() {
+export default function AdminDashboard() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
@@ -61,7 +58,7 @@ export default function UserDashboard() {
 
       <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
-        <DashboardContent />
+        <AdminDashboardContent />
       </Box>
     </Box>
   );
@@ -92,7 +89,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
           key={link.name}
           icon={link.icon}
           onClick={() => {
-            dispatch(setDashboardType(link.type));
+            dispatch(setAdminDashboardType(link.type));
           }}
         >
           {link.name}
@@ -156,7 +153,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
       />
 
       <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Welcome {user.username}
+        {user.username}
       </Text>
     </Flex>
   );
