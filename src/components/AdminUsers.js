@@ -19,11 +19,12 @@ import {
   ModalCloseButton,
   useDisclosure,
   Input,
+  Flex,
   TableContainer,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
-const UserRow = ({ user, onUpdate }) => (
+const UserRow = ({ user, onUpdate, lockUser, unlockUser }) => (
   <Tr>
     <Td>{user.id}</Td>
     <Td>{user.username}</Td>
@@ -31,7 +32,18 @@ const UserRow = ({ user, onUpdate }) => (
     <Td>{user.email}</Td>
     <Td>{user.phoneNumber}</Td>
     <Td>
-      <Button onClick={() => onUpdate(user)}>Update</Button>
+      <Flex gap={5}>
+        <Button onClick={() => onUpdate(user)}>Update</Button>
+        <Button
+          onClick={
+            user?.userStatus === "ACTIVE"
+              ? () => lockUser(user)
+              : () => unlockUser(user)
+          }
+        >
+          {user?.userStatus === "ACTIVE" ? "Lock" : "Unlock"}
+        </Button>
+      </Flex>
     </Td>
   </Tr>
 );
@@ -41,7 +53,6 @@ const AdminUsers = () => {
   const loggedInUserId = useSelector((state) => state.user.userDetails.id);
   const [selectedUser, setSelectedUser] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [formData, setFormData] = useState({
     username: "",
     fullName: "",
@@ -57,10 +68,34 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/users/");
-      const filteredUsers = response.data.filter((user) => user.id !== loggedInUserId);
+      const filteredUsers = response.data.filter(
+        (user) => user.id !== loggedInUserId
+      );
       setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
+    }
+  };
+
+  const unlockUser = async (user) => {
+    try {
+      await axios.post(`http://localhost:8080/api/users/unlockUser/${user.id}`, {
+        id: loggedInUserId,
+      });
+      fetchUsers();
+    } catch (error) {
+      console.error("Error unlocking user:", error);
+    }
+  };
+
+  const lockUser = async (user) => {
+    try {
+      await axios.post(`http://localhost:8080/api/users/lockUser/${user.id}`, {
+        id: loggedInUserId,
+      });
+      fetchUsers();
+    } catch (error) {
+      console.error("Error locking user:", error);
     }
   };
 
@@ -77,7 +112,10 @@ const AdminUsers = () => {
 
   const updateUserData = async () => {
     try {
-      await axios.put(`http://localhost:8080/api/users/${selectedUser.id}`, formData);
+      await axios.put(
+        `http://localhost:8080/api/users/${selectedUser.id}`,
+        formData
+      );
       fetchUsers();
       onClose();
     } catch (error) {
@@ -109,7 +147,13 @@ const AdminUsers = () => {
             </Thead>
             <Tbody>
               {users.map((user) => (
-                <UserRow key={user.id} user={user} onUpdate={openUpdateModal} />
+                <UserRow
+                  key={user.id}
+                  user={user}
+                  onUpdate={openUpdateModal}
+                  lockUser={lockUser}
+                  unlockUser={unlockUser}
+                />
               ))}
             </Tbody>
           </Table>

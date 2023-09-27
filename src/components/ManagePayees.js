@@ -191,7 +191,7 @@ function ManagePayees() {
         {payees.length > 0 ? (
           <Box rounded={"lg"} boxShadow={"lg"} p={4}>
             {payees.map((payee) => (
-              <Box key={payee.id}>
+              <Box key={payee.id} mb={5}>
                 <Flex alignItems="end" justifyContent="space-between" gap={10}>
                   <FormControl id={`name-${payee.id}`}>
                     <FormLabel>Name</FormLabel>
